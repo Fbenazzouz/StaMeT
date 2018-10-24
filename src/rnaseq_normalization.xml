@@ -1,0 +1,41 @@
+<tool id="RNAseq_Sim" name="RNAseq_Sim" version="0.1.0">
+  <description>RNAseq data normalization tool</description>
+
+<edam_topics>
+    <edam_topic>topic_2269</edam_topic>
+</edam_topics>
+
+<edam_operations>
+    <edam_operation>operation_3434</edam_operation>
+</edam_operations>
+
+<requirements>
+    <requirement type="package" version="3.4.1">r-base</requirement>
+    <requirement type="package">r-optparse</requirement>
+    <requirement type="package">r-xml</requirement>
+    <requirement type="package">bioconductor-preprocesscore</requirement>
+</requirements>
+
+  <command interpreter="Rscript">
+    normalisation_rnaseq.r
+
+    --count_file $count_file
+
+    --rnaseq_norm $rnaseq_norm
+  </command>
+
+  <inputs>
+          <param name="count_file" type="data" format="tabular" multiple="false" label="RNAseq expression table" help="The RNAseq data to be normalized through either DESeq2, edgeR, or VOOM methods. "/>
+
+          <param name="rnaseq_norm" type="select" value="DESeq2" label="Normalization method" help="Normalisation method for count data, possible values: DESeq2, edgeR, VOOM. [default value: DESeq2]">
+                  <option value="DESeq2">DESeq2</option>
+                  <option value="edgeR">edgeR</option>
+                  <option value="VOOM">VOOM</option>
+          </param>
+  </inputs>
+
+  <outputs>
+    <data name="RNAseq_normalized" format="tabular" from_work_dir="RNAseq_normalization.txt" label="Normalized RNAseq data"/>
+  </outputs>
+
+</tool>
