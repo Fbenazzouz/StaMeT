@@ -12,11 +12,11 @@ if(! "optparse" %in% pack_dispo) install.packages("optparse", repos="https://clo
 library(optparse)
 
 option_list = list(
-	make_option(c("-count", "--count_file"), type="character", default=NULL, 
-              help="Path to text file containing raw count data. See documentation for file structure details. [default: %default]"),	
-	make_option(c("-des", "--design"), type="character", default=NULL, 
-              help="Path to text file containing design information. See documentation for file structure details. [default: %default]"),				  
-	make_option(c("-rseq_n", "--rnaseq_norm"), type="character", default="DESeq2", 
+	make_option(c("-count", "--count_file"), type="character", default=NULL,
+              help="Path to text file containing raw count data. See documentation for file structure details. [default: %default]"),
+	make_option(c("-des", "--design"), type="character", default=NULL,
+              help="Path to text file containing design information. See documentation for file structure details. [default: %default]"),
+	make_option(c("-rseq_n", "--rnaseq_norm"), type="character", default="DESeq2",
               help="Normalisation method for count data, possible values: DESeq2, edgeR, VOOM. [default: %default]")
 )
 
@@ -27,28 +27,28 @@ counts <- read.table(les_args$count_file, header=TRUE, sep="\t", as.is=TRUE, row
 if(!is.null(les_args$design)) condidion <- read.table(les_args$design, header=TRUE, as.is=TRUE) else condition <- matrix(rep(1, ncol(counts)), ncol=1)
 
 if(!require("edgeR", quietly=TRUE, character.only=TRUE)){
-    source("http://bioconductor.org/biocLite.R")                  
-    biocLite("edgeR")           
+    source("http://bioconductor.org/biocLite.R")
+    biocLite("edgeR")
     library("edgeR", quietly=TRUE, character.only=TRUE)
 }
 
 if(!require("DESeq2", quietly=TRUE, character.only=TRUE)){
-    source("http://bioconductor.org/biocLite.R")                  
-    biocLite("DESeq2")           
+    source("http://bioconductor.org/biocLite.R")
+    biocLite("DESeq2")
     library("DESeq2", quietly=TRUE, character.only=TRUE)
 }
 
 library(MASS)
 
- 
+
 Normalization <- function(counts, condition, Norm=c("DESeq2", "edgeR", "VOOM")){
 
-	switch(Norm, 
+	switch(Norm,
 	      "DESeq2"={row.names(condition) <- colnames(counts)
 					dds <- DESeqDataSetFromMatrix(counts, condition, design=if(any(condition!=condition[1])) ~condition else ~1)
-					cds=estimateSizeFactors(dds) 
+					cds=estimateSizeFactors(dds)
 					#sizeFactors(cds)
-					Data_Norm <- counts(cds, normalized=TRUE) 
+					Data_Norm <- counts(cds, normalized=TRUE)
 					Norm_DESeq2_log2 <- log2(Data_Norm+1)
 					output <- Norm_DESeq2_log2},
           "edgeR"={cds <- DGEList(counts, group=condition )
@@ -65,4 +65,4 @@ Normalization <- function(counts, condition, Norm=c("DESeq2", "edgeR", "VOOM")){
 
 Norm_count <- Normalization(counts, condition, Norm=les_args$rnaseq_norm)
 
-write.table(data.frame(Gene=row.names(Norm_count), Norm_count), file=sub("(.+)(\\..+)$", "\\1_normalised\\2", basename(les_args$count_file)), sep="\t", row.names=FALSE, col.names=TRUE, quote=FALSE)
+write.table(data.frame(Gene=row.names(Norm_count), Norm_count), file="RNAseq_normalization.txt", sep="\t", row.names=FALSE, col.names=TRUE, quote=FALSE)
