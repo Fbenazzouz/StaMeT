@@ -1,4 +1,4 @@
-<tool id="RNAseq_Norm" name="RNAseq_Sim" version="0.1.0">
+<tool id="RNAseq_Norm" name="RNAseq_Norm" version="0.1.0">
   <description>RNAseq data normalization tool</description>
 
 <edam_topics>
