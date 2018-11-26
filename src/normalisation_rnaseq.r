@@ -44,8 +44,8 @@ library(MASS)
 Normalization <- function(counts, condition, Norm=c("DESeq2", "edgeR", "VOOM")){
 
 	switch(Norm,
-	      "DESeq2"={row.names(condition) <- colnames(counts)
-					dds <- DESeqDataSetFromMatrix(counts, condition, design=if(any(condition!=condition[1])) ~condition else ~1)
+	      "DESeq2"={colData <- data.frame (condition,row.names=colnames(counts) )
+			dds <- DESeqDataSetFromMatrix(counts, colData, design=if(any(condition!=condition[1])) ~condition else ~1)
 					cds=estimateSizeFactors(dds)
 					#sizeFactors(cds)
 					Data_Norm <- counts(cds, normalized=TRUE)
