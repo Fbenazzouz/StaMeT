@@ -23,7 +23,7 @@ option_list = list(
 arg_parser = OptionParser(option_list=option_list)
 les_args = parse_args(arg_parser)
 
-counts <- read.table(les_args$count_file, header=TRUE, sep="\t", as.is=TRUE, row.names=1)
+counts <- read.table(les_args$count_file, header=TRUE, sep="\t", as.is=TRUE, row.names=1, quote="\"", comment.char="")
 if(!is.null(les_args$design)) condition <- read.table(les_args$design, header=TRUE, as.is=TRUE) else condition <- matrix(rep(1, ncol(counts)), ncol=1)
 
 if(!require("edgeR", quietly=TRUE, character.only=TRUE)){
