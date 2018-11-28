@@ -53,7 +53,7 @@ meth <- les_args$standardisation
 nom_tables <- strsplit(les_args$tables, ",")[[1]]
 
 # import des tableaux
-l_tables <- lapply(nom_tables, function(nom_fich) read.table(nom_fich, sep="\t", header=TRUE, as.is=TRUE, row.names=1))
+l_tables <- lapply(nom_tables, function(nom_fich) read.table(nom_fich, sep="\t", header=TRUE, as.is=TRUE, row.names=1, quote="\"", comment.char=""))
 names(l_tables) <- sub("\\..+$", "", basename(nom_tables))
 nb_t <- length(l_tables)
 
