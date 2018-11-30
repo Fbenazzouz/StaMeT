@@ -37,11 +37,7 @@ les_args = parse_args(arg_parser)
 # - si aucun n'est fourni, récupération des fold-change par défaut, soit tels quels, soit avec échantillonnage pour avoir les bons nombres de DE et de up
 # - si le fichier est fourni, import du fichier
 if (is.null(les_args$fc_file)) {
-    FC <- read.table("FC.txt", as.is=TRUE, header=TRUE, sep="\t")[, 1, drop=TRUE]
-    if(les_args$gene_number!=10000 | les_args$diff_genes_ratio!=0.1 | les_args$up_ratio!=0.5){
-        nb_DE <- round(les_args$gene_number*les_args$diff_genes_ratio)
-        nb_up <- round(nb_DE*les_args$up_ratio)
-        FC <- c(sample(FC[1:500], nb_up, replace=TRUE), sample(FC[501:1000], nb_DE-nb_up, replace=TRUE))
+    FC=NULL	    
     }
 } else {
     FC <- read.table(les_args$fc_file, as.is=TRUE, header=TRUE, sep="\t")[, 1, drop=TRUE]
@@ -103,23 +99,27 @@ counts.simulation <- function(nGenes, n1, n2, pi0, up, fc, seed=NULL){
 
     ## LFC, environ moitié positif, moitié négatif (pour les gènes différentiellement exprimés (DE))
 	delta <- rep(0, nGenes)
-
+		if (!is.null(fc)){
 	# Verification qu'il n'y a pas de NA et que l'on a des valeurs numériques uniquement
 	# sinon, on sort de la fonction avec message d'erreur
 	if(any(is.na(fc))) {message("NA are not allowed in fc_file.") ; return()}
 	if(!is.numeric(fc)) {fc <- as.numeric(fc) ; if(any(is.na(fc))) {message("Fold change values should be numeric"); return()}}
-
 	if((length(fc)==TP) & (TP_up==0 | all(fc[1:TP_up]>1)) & all(fc[(TP_up+1):TP]<1)){
      	lfc <- log(fc)
 		delta[DE != 0] <- lfc[DE != 0]
 	}else{
-		message("Error: Vector FC is in discordance with parameters pi0 and up:")
-		message("---The size of vector FC must be equal to: ", TP)
-		message("---The first ", TP_up, " values must be strictly greater than 1")
-		message("---The following ", TP_down, " values must be strictly less than 1")
-		message("---A default FC file is available when no value is given for fc_file parameter.")
-		return()
-	}
+		fc=exp(c(sort(rnorm(TP_up,2*log(2),0.3*log(2)),decreasing = TRUE)[1:(TP_up/2)],sort(rnorm(TP_up,log(2),0.5*log(2)),decreasing = TRUE)[1:(TP_up/2)],
+		sort(rnorm(TP_down,-2*log(2),0.3*log(2)),decreasing = FALSE)[1:(TP_down/2)],sort(rnorm(TP_down,-log(2),0.5*log(2)),decreasing = FALSE)[1:(TP_down/2)]))
+			lfc <- log(fc)
+		delta[DE != 0] <- lfc[DE != 0]
+	}}
+	if(is.null(fc)){
+		fc=exp(c(sort(rnorm(TP_up,2*log(2),0.3*log(2)),decreasing = TRUE)[1:(TP_up/2)],sort(rnorm(TP_up,log(2),0.5*log(2)),decreasing = TRUE)[1:(TP_up/2)],
+		sort(rnorm(TP_down,-2*log(2),0.3*log(2)),decreasing = FALSE)[1:(TP_down/2)],sort(rnorm(TP_down,-log(2),0.5*log(2)),decreasing = FALSE)[1:(TP_down/2)]))
+			lfc <- log(fc)
+		delta[DE != 0] <- lfc[DE != 0]
+		}
+	
 
 	 # initialisation
 	 h <- rep(TRUE, nGenes)
