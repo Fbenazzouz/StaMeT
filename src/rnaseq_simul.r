@@ -37,7 +37,7 @@ les_args = parse_args(arg_parser)
 if (!is.null(les_args$fc_file)) {
 
     FC <- read.table(les_args$fc_file, as.is=TRUE, header=TRUE, sep="\t")[, 1, drop=TRUE]
-}
+} else {FC=NULL}
 
 
 
