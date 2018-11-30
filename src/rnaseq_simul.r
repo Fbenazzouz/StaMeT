@@ -33,13 +33,9 @@ option_list = list(
 arg_parser = OptionParser(option_list=option_list)
 les_args = parse_args(arg_parser)
 
-# création du vecteur des foldchange :
-# - si aucun n'est fourni, récupération des fold-change par défaut, soit tels quels, soit avec échantillonnage pour avoir les bons nombres de DE et de up
-# - si le fichier est fourni, import du fichier
-if (is.null(les_args$fc_file)) {
-    FC=NULL	    
-    }
-} else {
+
+if (!is.null(les_args$fc_file)) {
+
     FC <- read.table(les_args$fc_file, as.is=TRUE, header=TRUE, sep="\t")[, 1, drop=TRUE]
 }
 
