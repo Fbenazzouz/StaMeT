@@ -99,26 +99,24 @@ counts.simulation <- function(nGenes, n1, n2, pi0, up, fc, seed=NULL){
 
     ## LFC, environ moitié positif, moitié négatif (pour les gènes différentiellement exprimés (DE))
 	delta <- rep(0, nGenes)
-		if (!is.null(fc)){
-	# Verification qu'il n'y a pas de NA et que l'on a des valeurs numériques uniquement
-	# sinon, on sort de la fonction avec message d'erreur
-	if(any(is.na(fc))) {message("NA are not allowed in fc_file.") ; return()}
-	if(!is.numeric(fc)) {fc <- as.numeric(fc) ; if(any(is.na(fc))) {message("Fold change values should be numeric"); return()}}
-	if((length(fc)==TP) & (TP_up==0 | all(fc[1:TP_up]>1)) & all(fc[(TP_up+1):TP]<1)){
-     	lfc <- log(fc)
-		delta[DE != 0] <- lfc[DE != 0]
-	}else{
-		fc=exp(c(sort(rnorm(TP_up,2*log(2),0.3*log(2)),decreasing = TRUE)[1:(TP_up/2)],sort(rnorm(TP_up,log(2),0.5*log(2)),decreasing = TRUE)[1:(TP_up/2)],
-		sort(rnorm(TP_down,-2*log(2),0.3*log(2)),decreasing = FALSE)[1:(TP_down/2)],sort(rnorm(TP_down,-log(2),0.5*log(2)),decreasing = FALSE)[1:(TP_down/2)]))
-			lfc <- log(fc)
-		delta[DE != 0] <- lfc[DE != 0]
-	}}
 	if(is.null(fc)){
-		fc=exp(c(sort(rnorm(TP_up,2*log(2),0.3*log(2)),decreasing = TRUE)[1:(TP_up/2)],sort(rnorm(TP_up,log(2),0.5*log(2)),decreasing = TRUE)[1:(TP_up/2)],
+		fc1=exp(c(sort(rnorm(TP_up,2*log(2),0.3*log(2)),decreasing = TRUE)[1:(TP_up/2)],sort(rnorm(TP_up,log(2),0.5*log(2)),decreasing = TRUE)[1:(TP_up/2)],
 		sort(rnorm(TP_down,-2*log(2),0.3*log(2)),decreasing = FALSE)[1:(TP_down/2)],sort(rnorm(TP_down,-log(2),0.5*log(2)),decreasing = FALSE)[1:(TP_down/2)]))
-			lfc <- log(fc)
+			lfc <- log(fc1)
 		delta[DE != 0] <- lfc[DE != 0]
-		}
+		}else{
+		if(any(is.na(fc))) {message("NA are not allowed in fc_file.") ; return()}
+		if(!is.numeric(fc)) {fc <- as.numeric(fc) ; if(any(is.na(fc))) {message("Fold change values should be numeric"); return()}}
+		if((length(fc)==TP) & (TP_up==0 | all(fc[1:TP_up]>1)) & all(fc[(TP_up+1):TP]<1)){
+     		lfc <- log(fc)
+		delta[DE != 0] <- lfc[DE != 0]
+		}else{
+			fc2=exp(c(sort(rnorm(TP_up,2*log(2),0.3*log(2)),decreasing = TRUE)[1:(TP_up/2)],sort(rnorm(TP_up,log(2),0.5*log(2)),decreasing = TRUE)[1:(TP_up/2)],
+			sort(rnorm(TP_down,-2*log(2),0.3*log(2)),decreasing = FALSE)[1:(TP_down/2)],sort(rnorm(TP_down,-log(2),0.5*log(2)),decreasing = FALSE)[1:(TP_down/2)]))
+			lfc <- log(fc2)
+			delta[DE != 0] <- lfc[DE != 0]
+		}}
+		
 	
 
 	 # initialisation
