@@ -12,11 +12,11 @@ if(! "optparse" %in% pack_dispo) install.packages("optparse", repos="https://clo
 library(optparse)
 
 option_list = list(
-    make_option(c("-gn", "--gene_number"), type="numeric", default=10000,
+    make_option(c("-gn", "--gene_number"), type="numeric", default=100,
               help="Total number of genes that are simulated [default: %default]"),
-	make_option(c("-sn1", "--samples_n1"), type="numeric", default=75,
+	make_option(c("-sn1", "--samples_n1"), type="numeric", default=7,
               help="Number of samples with phenotype 1 [default: %default]"),
-	make_option(c("-sn2", "--samples_n2"), type="numeric", default=75,
+	make_option(c("-sn2", "--samples_n2"), type="numeric", default=7,
               help="Number of samples with phenotype 2 [default: %default]"),
 	make_option(c("-diff", "--diff_genes_ratio"), type="numeric", default=0.1,
               help="Proportion of differentially expressed genes (genes related to phenotype) within all genes [default: %default]"),
