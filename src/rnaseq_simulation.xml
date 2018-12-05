@@ -63,5 +63,10 @@
   <outputs>
     <data name="RNAseq_simulation" format="tabular" from_work_dir="RNAseq_simulation.txt" label="Simulated RNAseq expression"/>
   </outputs>
+  
+ <citations>
+    <citation type="doi">10.1093/bioinformatics/btp698</citation>
+  </citations>
 
 </tool>
+
