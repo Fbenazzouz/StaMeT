@@ -33,12 +33,14 @@
                   <option value="VOOM">VOOM</option>
           </param>
   </inputs>
-  <citations>
-    <citation type="doi">10.1093/bioinformatics/btp698</citation>
-</citations>
 
   <outputs>
     <data name="RNAseq_normalized" format="tabular" from_work_dir="RNAseq_normalization.txt" label="Normalized RNAseq data"/>
   </outputs>
+   <citations>
+    <citation type="doi">10.1093/bioinformatics/btp698</citation>
+  </citations>
+
+
 
 </tool>
