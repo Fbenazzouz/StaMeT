@@ -53,6 +53,8 @@
           This tool simulates microarray data with two conditions and known characteristics. Simulated data have similar behavior as those obtained with Affymetrix® platform, after normalization (Log2 intensity).
   </help>
 
-  <citations>
+   <citations>
+    <citation type="doi">10.1093/bioinformatics/btp698</citation>
   </citations>
+
 </tool>
