@@ -12,11 +12,11 @@ if(! "optparse" %in% pack_dispo) install.packages("optparse", repos="https://clo
 library(optparse)
 
 option_list = list(
-    make_option(c("-gn", "--gene_number"), type="numeric", default=100,
+    make_option(c("-gn", "--gene_number"), type="numeric", default=10000,
               help="Total number of genes that are simulated [default: %default]"),
-	make_option(c("-sn1", "--samples_n1"), type="numeric", default=7,
+	make_option(c("-sn1", "--samples_n1"), type="numeric", default=75,
               help="Number of samples with phenotype 1 [default: %default]"),
-	make_option(c("-sn2", "--samples_n2"), type="numeric", default=7,
+	make_option(c("-sn2", "--samples_n2"), type="numeric", default=75,
               help="Number of samples with phenotype 2 [default: %default]"),
 	make_option(c("-diff", "--diff_genes_ratio"), type="numeric", default=0.1,
               help="Proportion of differentially expressed genes (genes related to phenotype) within all genes [default: %default]"),
@@ -143,7 +143,7 @@ counts.simulation <- function(nGenes, n1, n2, pi0, up, fc, seed=NULL){
 		phi[h, ] <- matrix(rep(true_disps[h],n1+n2 ), ncol = n1+n2)
 		## dispersion des comptages
 		counts[h, ] <- rnegbin(sum(h) * (n1+n2), lambda[h, ], 1/phi[h, ])
-		counts<- sapply(as.data.frame((counts)), function(x) {x[is.na(x)] <- round(median(x, na.rm=TRUE)); x})
+		counts	<- sapply(as.data.frame((counts)), function(x) {x[is.na(x)] <- 0; x})
 		h <- (rowSums(cpm(counts) > 2) < 3)
 	}
 
