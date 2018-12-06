@@ -65,7 +65,7 @@ This function is used to simulate RNA-seq count data and to normalize them. Thre
 -	samples_n2: an integer specifying the number of phenotype 2 (condition 2) samples to be simulated. Default to 75;
 -	diff_genes_ratio: the proportion of differentially expressed genes. Default to 0.1;
 -	up_ratio: the proportion of up-regulated genes among differentially expressed genes. Default to 0.5;
--	fc_file: The path to a text file containing fold-changes in column, with a header. If no file is provided, the default fold-changes will be taken, either as is, or with a random sampling to get the right number of DE and up-regulated genes; 
+-	fc_file: The path to a text file containing fold-changes in column, with a header and with first rows corresponding to fold-changes associated with up-regulated genes. If no file is provided or the file has incorrect dimension (not corresponding to number of differentially expressed genes to be simulated) and/or values, a vector of fold-change in agreement with the other parameters will be generated; 
 -	rnaseq_norm: a character indicating the normalization method for RNA-seq. Available methods are “DESeq2”, “edgeR” and “VOOM”. Default to “DESeq2”;
 -	seed: an integer used as seed for generating random number, it permits to generate reproducible data. By default, none is set.
 
