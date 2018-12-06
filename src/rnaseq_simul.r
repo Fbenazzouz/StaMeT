@@ -94,34 +94,37 @@ counts.simulation <- function(nGenes, n1, n2, pi0, up, fc, seed=NULL){
 	## vecteur des DE: 1 pour les gènes Up, -1 pour les gènes down et 0 pour les gènes non DE
 	DE <- c(rep(1, TP_up), rep(-1, TP_down), rep(0, FP))
 
-    ## LFC, environ moitié positif, moitié négatif (pour les gènes différentiellement exprimés (DE))
+    ## vecteur des LFC (pour les gènes différentiellement exprimés)
 	delta <- rep(0, nGenes)
+	
+	FC_OK <- TRUE
 	if(is.null(fc)){
-		fc1=exp(c(sort(rnorm(TP_up,2*log(2),0.3*log(2)),decreasing = TRUE)[1:(TP_up/2)],sort(rnorm(TP_up,log(2),0.5*log(2)),decreasing = TRUE)[1:(TP_up/2)],
-		sort(rnorm(TP_down,-2*log(2),0.3*log(2)),decreasing = FALSE)[1:(TP_down/2)],sort(rnorm(TP_down,-log(2),0.5*log(2)),decreasing = FALSE)[1:(TP_down/2)]))
-			lfc <- log(fc1)
-		delta[DE != 0] <- lfc[DE != 0]
-		}else{
-		if(any(is.na(fc))) {message("NA are not allowed in fc_file.") ; return()}
-		if(!is.numeric(fc)) {fc <- as.numeric(fc) ; if(any(is.na(fc))) {message("Fold change values should be numeric"); return()}}
-		if((length(fc)==TP) & (TP_up==0 | all(fc[1:TP_up]>1)) & all(fc[(TP_up+1):TP]<1)){
-     		lfc <- log(fc)
-		delta[DE != 0] <- lfc[DE != 0]
-		}else{
-			fc2=exp(c(sort(rnorm(TP_up,2*log(2),0.3*log(2)),decreasing = TRUE)[1:(TP_up/2)],sort(rnorm(TP_up,log(2),0.5*log(2)),decreasing = TRUE)[1:(TP_up/2)],
-			sort(rnorm(TP_down,-2*log(2),0.3*log(2)),decreasing = FALSE)[1:(TP_down/2)],sort(rnorm(TP_down,-log(2),0.5*log(2)),decreasing = FALSE)[1:(TP_down/2)]))
-			lfc <- log(fc2)
-			delta[DE != 0] <- lfc[DE != 0]
-		}}
+		FC_OK <- FALSE
+	} else {
+		if(!is.numeric(fc)) fc <- as.numeric(fc)
+		if(any(is.na(fc))) FC_OK <- FALSE
+		if((length(fc)==TP) & (TP_up==0 | all(fc[1:TP_up]>1, na.rm=TRUE)) & (TP_up==TP | all(fc[(TP_up+1):TP]<1, na.rm=TRUE)) FC_OK <- FC_OK & TRUE
+	}
+	if (FC_OK) {
+ 		lfc <- log(fc)
+		delta[DE != 0] <- lfc
+	} else {
+		lfc <- c(sort(rnorm(TP_up, 2*log(2), 0.3*log(2)), decreasing = TRUE)[1:floor(TP_up/2)], 
+			 sort(rnorm(TP_up, log(2), 0.5*log(2)), decreasing = TRUE)[1:ceiling(TP_up/2)],
+			 sort(rnorm(TP_down, -2*log(2), 0.3*log(2)), decreasing = FALSE)[1:floor(TP_down/2)],
+			 sort(rnorm(TP_down, -log(2), 0.5*log(2)), decreasing = FALSE)[1:ceiling(TP_down/2)])
+		delta[DE != 0] <- lfc
+	}
+	
 		
 	
 
-	 # initialisation
-	 h <- rep(TRUE, nGenes)
-	 counts <- matrix(0, nrow = nGenes, ncol = n1+n2)
-	 selected_genes <- true_means <- true_disps <- rep(0, nGenes)
-	 left_genes <- 1:length(mu)
-	 lambda <- phi <- matrix(0, nrow=nGenes, ncol=n1+n2)
+	# initialisation
+	h <- rep(TRUE, nGenes)
+	counts <- matrix(0, nrow = nGenes, ncol = n1+n2)
+	selected_genes <- true_means <- true_disps <- rep(0, nGenes)
+	left_genes <- 1:length(mu)
+	lambda <- phi <- matrix(0, nrow=nGenes, ncol=n1+n2)
 
 	while(any(h)){
 		temp <- sample.int(length(left_genes), sum(h), replace)
