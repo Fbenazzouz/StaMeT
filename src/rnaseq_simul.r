@@ -103,7 +103,7 @@ counts.simulation <- function(nGenes, n1, n2, pi0, up, fc, seed=NULL){
 	} else {
 		if(!is.numeric(fc)) fc <- as.numeric(fc)
 		if(any(is.na(fc))) FC_OK <- FALSE
-		if((length(fc)==TP) & (TP_up==0 | all(fc[1:TP_up]>1, na.rm=TRUE)) & (TP_up==TP | all(fc[(TP_up+1):TP]<1, na.rm=TRUE)) FC_OK <- FC_OK & TRUE
+		if((length(fc)==TP) & (TP_up==0 | all(fc[1:TP_up]>1, na.rm=TRUE)) & (TP_up==TP | all(fc[(TP_up+1):TP]<1, na.rm=TRUE))) FC_OK <- FC_OK & TRUE
 	}
 	if (FC_OK) {
  		lfc <- log(fc)
