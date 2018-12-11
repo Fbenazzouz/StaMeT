@@ -27,13 +27,13 @@
   <inputs>
     <param name="tables" type="data" format="tabular" multiple="true" label="Gene expression tables"/>
 
-    <param name="standardisation" type="select" value="zscore" label="Standardisation method" help="Standardisation method, possible values: zscore, quantile, robust_zscore [default value: zscore]">
+    <param name="standardisation" type="select" value="zscore" label="Standardisation method" help="Standardisation method, possible values: zscore, quantile, robust_zscore">
           <option value="zscore">zscore</option>
           <option value="quantile">quantile</option>
           <option value="robust_zscore">robust_zscore</option>
     </param>
 
-    <param name="all_genes" type="select" label="All genes" help="Should all genes be returned? FALSE will return only common genes between tables [default value: All genes]">
+    <param name="all_genes" type="select" label="All genes" help="Should all genes be returned? FALSE will return only common genes between tables">
           <option value="TRUE">All genes</option>
           <option value="FALSE">Genes intersection only</option>
     </param>
@@ -45,8 +45,8 @@
     <data name="Transcripts fusion summary" format="png" from_work_dir="Summary_Plot_Fusion.png" label="Fusion summary plot" />
   </outputs>
 
-  <citations>
+  <!--<citations>
     <citation type="doi">10.1093/bioinformatics/btp698</citation>
-  </citations>
+  </citations>-->
 
 </tool>

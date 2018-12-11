@@ -39,34 +39,34 @@
 
    <inputs>
 
-      <param name="gene_number" type="integer" value="10000" label="Number of simulated genes" help="Total number of genes that are simulated [default value: 10000]"/>
+      <param name="gene_number" type="integer" value="10000" label="Number of simulated genes" help="Total number of genes that are simulated"/>
 
-      <param name="samples_n1" type="integer" value="75" label="Phenotype 1 samples" help="Number of samples with phenotype 1 [default value: 75]"/>
+      <param name="samples_n1" type="integer" value="75" label="Phenotype 1 samples" help="Number of samples with phenotype 1"/>
 
-      <param name="samples_n2" type="integer" value="75" label="Phenotype 2 samples" help="Number of samples with phenotype 2 [default value: 75]"/>
+      <param name="samples_n2" type="integer" value="75" label="Phenotype 2 samples" help="Number of samples with phenotype 2"/>
 
-      <param name="up_ratio" type="float" value="0.5" label="ratio of UP genes" help="Proportion of up-regulated genes within differentially-expressed genes [default value: 0.5]"/>
+      <param name="up_ratio" type="float" value="0.5" label="ratio of UP genes" help="Proportion of up-regulated genes within differentially-expressed genes"/>
 
-      <param name="diff_genes_ratio" type="float" value="0.1" label="ratio of significative p-values" help="proportion of differentially expressed genes (genes related to phenotype) within all genes [default value: 0.1]"/>
+      <param name="diff_genes_ratio" type="float" value="0.1" label="ratio of significative p-values" help="proportion of differentially expressed genes (genes related to phenotype) within all genes"/>
 
-      <param name="rnaseq_norm" type="select" value="DESeq2" label="Normalization method" help="Normalisation method for count data, possible values: DESeq2, edgeR, VOOM. [default value: DESeq2]">
+      <param name="rnaseq_norm" type="select" value="DESeq2" label="Normalization method" help="Normalisation method for count data, possible values: DESeq2, edgeR, VOOM">
           <option value="DESeq2">DESeq2</option>
           <option value="edgeR">edgeR</option>
           <option value="VOOM">VOOM</option>
       </param>
 
-      <param name="fc" optional="true" type="data" format="tabular" label="Fold change" help="Text file with Fold-Change values for the simulated genes. See documentation for file structure details [optinal parameter]."/>
+      <param name="fc" optional="true" type="data" format="tabular" label="Fold change" help="Text file with Fold-Change values for the simulated genes. See documentation for file structure details"/>
 
-      <param name="seed" type="integer" optional="true" label="Random seed" help="Seed value: can be set to make the simulation reproducible [optinal parameter]."/>
+      <param name="seed" type="integer" optional="true" label="Random seed" help="Seed value: can be set to make the simulation reproducible"/>
   </inputs>
 
   <outputs>
     <data name="RNAseq_simulation" format="tabular" from_work_dir="RNAseq_simulation.txt" label="Simulated RNAseq expression"/>
   </outputs>
   
- <citations>
+ <!--<citations>
     <citation type="doi">10.1093/bioinformatics/btp698</citation>
-  </citations>
+  </citations>-->
 
 </tool>
 
