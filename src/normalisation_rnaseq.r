@@ -51,11 +51,11 @@ Normalization <- function(counts, condition, Norm=c("DESeq2", "edgeR", "VOOM")){
 					Data_Norm <- counts(cds, normalized=TRUE)
 					Norm_DESeq2_log2 <- log2(Data_Norm+1)
 					output <- Norm_DESeq2_log2},
-          "edgeR"={cds <- DGEList(counts, group=condition )
+          "edgeR"={cds <- DGEList(counts, group=condition[,1] )
 				   cds <- calcNormFactors(cds, method="TMM")
 				   lcpm <- cpm(cds, log=TRUE)
 				   output <- lcpm},
-		  "VOOM"={design=model.matrix(~0+condition)
+		  "VOOM"={design=model.matrix(~0+condition[,1])
 				  voom_trans<-voom(counts, design,span = 0.5, plot = FALSE, save.plot = FALSE )
 				  voom_matrix <-  voom_trans$E
 				  output <- voom_matrix},
